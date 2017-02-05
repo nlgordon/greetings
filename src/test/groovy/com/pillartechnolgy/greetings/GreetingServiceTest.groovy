@@ -4,12 +4,23 @@ import spock.lang.Specification
 
 class GreetingServiceTest extends Specification {
 
-    def "greeting service returns a simple greeting"() {
-        setup:
-        GreetingService service = new GreetingService();
+    GreetingService service;
 
+    def setup() {
+       service = new GreetingService();
+    }
+
+    def "greeting service returns a simple greeting"() {
         when:
-        String greeting = service.generateGreeting();
+        String greeting = service.generateGreeting()
+
+        then:
+        greeting == 'Hello World'
+    }
+
+    def "greeting service allows you to specify a desired greeting"() {
+        when:
+        String greeting = service.generateGreeting("hello world")
 
         then:
         greeting == 'Hello World'

@@ -1,4 +1,4 @@
-package com.pillartechnolgy.greetings
+package com.pillartechnology.greetings
 
 class GreetingService {
     String generateGreeting() {

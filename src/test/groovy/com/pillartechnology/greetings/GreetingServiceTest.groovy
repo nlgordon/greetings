@@ -1,5 +1,6 @@
-package com.pillartechnolgy.greetings
+package com.pillartechnology.greetings
 
+import com.pillartechnology.greetings.GreetingService
 import spock.lang.Specification
 
 class GreetingServiceTest extends Specification {

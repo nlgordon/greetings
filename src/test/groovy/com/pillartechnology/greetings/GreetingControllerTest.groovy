@@ -8,6 +8,7 @@ class GreetingControllerTest extends Specification {
 
     def setup() {
         controller = new GreetingController()
+        controller.greetingService = Mock(GreetingService)
     }
 
     def "GreetingController responds to a ping request"() {
@@ -18,11 +19,11 @@ class GreetingControllerTest extends Specification {
         actual == "pong"
     }
 
-    def "GreetingController responds to greeting requests"() {
+    def "gets its greetings from the GreetingService"() {
         when:
-        String actual = controller.greeting()
+        String actual = controller.greeting("template")
 
         then:
-        actual == "greeting"
+        1 * controller.greetingService.generateGreeting("template")
     }
 }

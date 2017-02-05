@@ -2,11 +2,13 @@ package com.pillartechnology.greetings
 
 class GreetingController {
 
+    GreetingService greetingService
+
     String ping() {
         return "pong"
     }
 
-    String greeting() {
-        return "greeting"
+    String greeting(String template) {
+        return greetingService.generateGreeting(template)
     }
 }

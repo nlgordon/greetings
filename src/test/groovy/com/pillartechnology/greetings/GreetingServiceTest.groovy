@@ -4,10 +4,10 @@ import spock.lang.Specification
 
 class GreetingServiceTest extends Specification {
 
-    GreetingService service;
+    GreetingServiceImpl service;
 
     def setup() {
-       service = new GreetingService();
+       service = new GreetingServiceImpl();
     }
 
     def "greeting service returns a simple greeting"() {

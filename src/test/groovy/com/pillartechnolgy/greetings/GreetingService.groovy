@@ -6,6 +6,10 @@ class GreetingService {
     }
 
     String generateGreeting(String template) {
+
+        if (template == "valentines") {
+            return "Happy Valentines!"
+        }
         return "Hello World"
     }
 }

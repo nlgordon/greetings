@@ -15,14 +15,22 @@ class GreetingServiceTest extends Specification {
         String greeting = service.generateGreeting()
 
         then:
-        greeting == 'Hello World'
+        greeting == "Hello World"
     }
 
-    def "greeting service allows you to specify a desired greeting"() {
+    def "greeting service allows you to retrieve the 'hello world' greeting"() {
         when:
         String greeting = service.generateGreeting("hello world")
 
         then:
-        greeting == 'Hello World'
+        greeting == "Hello World"
+    }
+
+    def "greeting service allows you to retrieve the 'valentines' greeting"() {
+        when:
+        String greeting = service.generateGreeting("valentines")
+
+        then:
+        greeting == "Happy Valentines!"
     }
 }

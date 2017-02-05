@@ -33,4 +33,14 @@ class GreetingServiceTest extends Specification {
         then:
         greeting == "Happy Valentines!"
     }
+
+    def "not specifying a template throws an exception"() {
+        when:
+        String greeting = service.generateGreeting("")
+
+        then:
+        IllegalArgumentException e = thrown()
+        e.cause == null
+        greeting == null
+    }
 }

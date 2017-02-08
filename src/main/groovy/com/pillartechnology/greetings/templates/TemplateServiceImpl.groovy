@@ -1,7 +1,11 @@
 package com.pillartechnology.greetings.templates
 
-class TemplateServiceImpl {
+import org.springframework.stereotype.Component
 
+@Component
+class TemplateServiceImpl implements TemplateService {
+
+    @Override
     String getTemplate(String template) {
 
         if (!template) {

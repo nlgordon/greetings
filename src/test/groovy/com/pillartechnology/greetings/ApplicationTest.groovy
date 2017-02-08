@@ -39,4 +39,12 @@ class ApplicationTest extends Specification {
         then:
         controller.greetingService != null
     }
+
+    def "greeting service has the template service wired into it"() {
+        when:
+        GreetingServiceImpl service = context.getBean(GreetingService)
+
+        then:
+        service.templateService != null
+    }
 }

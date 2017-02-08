@@ -5,42 +5,20 @@ import spock.lang.Specification
 
 class GreetingServiceImplTest extends Specification {
 
-    GreetingServiceImpl service;
+    GreetingServiceImpl service
 
     def setup() {
         service = new GreetingServiceImpl()
-        service.templateService = Mock(TemplateService)
+        service.templateService = Mock(TemplateService) {
+            getTemplate("test") >> "test template"
+        }
     }
 
-    def "greeting service returns a simple greeting"() {
+    def "gets the template for the greeting from the template service"() {
         when:
-        String greeting = service.generateGreeting()
+        String greeting = service.generateGreeting("test")
 
         then:
-        greeting == "Hello World"
-    }
-
-    def "greeting service allows you to retrieve the 'hello world' greeting"() {
-        when:
-        String greeting = service.generateGreeting("hello world")
-
-        then:
-        greeting == "Hello World"
-    }
-
-    def "greeting service allows you to retrieve the 'valentines' greeting"() {
-        when:
-        String greeting = service.generateGreeting("valentines")
-
-        then:
-        greeting == "Happy Valentines!"
-    }
-
-    def "not specifying a template throws an exception"() {
-        when:
-        service.generateGreeting("")
-
-        then:
-        thrown(IllegalArgumentException)
+        greeting == "test template"
     }
 }

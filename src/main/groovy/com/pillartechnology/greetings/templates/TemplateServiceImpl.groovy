@@ -24,7 +24,7 @@ class TemplateServiceImpl implements TemplateService {
             return templates[template]
         }
 
-        throw new IllegalArgumentException("Unknown template $template")
+        return null
     }
 
     void addTemplate(String name, String template) {

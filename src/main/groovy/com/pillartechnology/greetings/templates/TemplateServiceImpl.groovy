@@ -13,5 +13,7 @@ class TemplateServiceImpl {
         } else if (template == 'valentines') {
             return 'Happy Valentines Day!'
         }
+
+        throw new IllegalArgumentException("Unknown template $template")
     }
 }

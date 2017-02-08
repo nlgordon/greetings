@@ -1,5 +1,6 @@
 package com.pillartechnology.greetings
 
+import com.pillartechnology.greetings.templates.TemplateService
 import spock.lang.Specification
 
 class GreetingServiceImplTest extends Specification {
@@ -7,7 +8,8 @@ class GreetingServiceImplTest extends Specification {
     GreetingServiceImpl service;
 
     def setup() {
-       service = new GreetingServiceImpl();
+        service = new GreetingServiceImpl()
+        service.templateService = Mock(TemplateService)
     }
 
     def "greeting service returns a simple greeting"() {

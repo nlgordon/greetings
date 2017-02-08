@@ -1,9 +1,12 @@
 package com.pillartechnology.greetings
 
+import com.pillartechnology.greetings.templates.TemplateService
 import org.springframework.stereotype.Component
 
 @Component
 class GreetingServiceImpl implements GreetingService {
+
+    TemplateService templateService
 
     String generateGreeting() {
         return "Hello World"

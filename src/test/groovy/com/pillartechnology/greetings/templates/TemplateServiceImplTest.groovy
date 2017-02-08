@@ -33,4 +33,12 @@ class TemplateServiceImplTest extends Specification {
         then:
         thrown(IllegalArgumentException)
     }
+
+    def "if a template isn't known, throw an error"() {
+        when:
+        service.getTemplate("unknown template")
+
+        then:
+        thrown(IllegalArgumentException)
+    }
 }

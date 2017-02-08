@@ -3,6 +3,15 @@ package com.pillartechnology.greetings.templates
 class TemplateServiceImpl {
 
     String getTemplate(String template) {
-        return "hello world"
+
+        if (!template) {
+            throw new IllegalArgumentException("No template specified")
+        }
+
+        if (template == 'hello') {
+            return 'hello world'
+        } else if (template == 'valentines') {
+            return 'Happy Valentines Day!'
+        }
     }
 }

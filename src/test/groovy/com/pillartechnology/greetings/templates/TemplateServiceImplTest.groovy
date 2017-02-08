@@ -4,14 +4,33 @@ import spock.lang.Specification
 
 class TemplateServiceImplTest extends Specification {
 
-    def "the template service returns 'hello world' for the 'hello' template"() {
-        setup:
-        TemplateServiceImpl service = new TemplateServiceImpl();
+    TemplateServiceImpl service
 
+    def setup() {
+        service = new TemplateServiceImpl()
+    }
+
+    def "the template service returns 'hello world' for the 'hello' template"() {
         when:
         String template = service.getTemplate('hello')
 
         then:
         template == 'hello world'
+    }
+
+    def "the template service returns a greeting for valentines day"() {
+        when:
+        String template = service.getTemplate('valentines')
+
+        then:
+        template == 'Happy Valentines Day!'
+    }
+
+    def "if a template isn't specified, an error is thrown"() {
+        when:
+        service.getTemplate("")
+
+        then:
+        thrown(IllegalArgumentException)
     }
 }

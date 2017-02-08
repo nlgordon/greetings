@@ -2,7 +2,7 @@ package com.pillartechnology.greetings
 
 import spock.lang.Specification
 
-class GreetingServiceTest extends Specification {
+class GreetingServiceImplTest extends Specification {
 
     GreetingServiceImpl service;
 

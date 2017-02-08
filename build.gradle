@@ -1,4 +1,7 @@
-apply plugin: 'groovy'
+plugins {
+    id 'org.springframework.boot' version '1.5.1.RELEASE'
+    id 'groovy'
+}
 
 group 'com.pillartechnology'
 version '0.1-SNAPSHOT'
@@ -9,7 +12,9 @@ repositories  {
 
 dependencies {
 	compile 'org.codehaus.groovy:groovy-all:2.4.8'
+    compile 'org.springframework.boot:spring-boot-starter-web'
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-3'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 
 task wrapper(type: Wrapper) {

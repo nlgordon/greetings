@@ -1,6 +1,11 @@
 package com.pillartechnology.greetings
 
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.ResultActions
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 class GreetingControllerTest extends Specification {
 
@@ -25,5 +30,16 @@ class GreetingControllerTest extends Specification {
 
         then:
         1 * controller.greetingService.generateGreeting("template")
+    }
+
+    def "when the api for a greeting is called, the greeting service is invoked"() {
+        setup:
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+
+        when:
+        ResultActions result = mockMvc.perform(get("/api/greeting"))
+
+        then:
+        result.andExpect(status().isOk())
     }
 }

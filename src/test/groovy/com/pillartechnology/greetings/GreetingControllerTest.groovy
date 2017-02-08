@@ -21,7 +21,7 @@ class GreetingControllerTest extends Specification {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
     }
 
-    def "GreetingController responds to a ping request"() {
+    def "responds to a ping request"() {
         when:
         String actual = controller.ping()
 
@@ -36,6 +36,15 @@ class GreetingControllerTest extends Specification {
         then:
         1 * controller.greetingService.generateGreeting("template")
     }
+
+    def "returns a GreetingResponse object with the greeting populated"() {
+        when:
+        GreetingController.GreetingResponse response = controller.greeting("template");
+
+        then:
+        response.greeting == "hello world"
+    }
+
 
     def "when the api for a greeting is called the status is 200/OK"() {
         when:
@@ -67,5 +76,13 @@ class GreetingControllerTest extends Specification {
 
         then:
         result.andExpect(status().isBadRequest())
+    }
+
+    def "when the api is called the greeting service content is returned to the user"() {
+        when:
+        ResultActions result = mockMvc.perform(get("/api/greeting?template=foo"))
+
+        then:
+        result.andExpect(content().json('{"greeting": "hello world"}'))
     }
 }

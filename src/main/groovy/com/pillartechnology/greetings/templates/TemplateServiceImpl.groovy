@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component
 @Component
 class TemplateServiceImpl implements TemplateService {
 
+    Map<String, String> templates = [:]
+
     @Override
     String getTemplate(String template) {
 
@@ -18,6 +20,18 @@ class TemplateServiceImpl implements TemplateService {
             return 'Happy Valentines Day!'
         }
 
+        if (templates.containsKey(template)) {
+            return templates[template]
+        }
+
         throw new IllegalArgumentException("Unknown template $template")
+    }
+
+    void addTemplate(String name, String template) {
+        templates[name] = template
+    }
+
+    boolean hasTemplate(String name) {
+        return false
     }
 }

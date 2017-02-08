@@ -41,4 +41,22 @@ class TemplateServiceImplTest extends Specification {
         then:
         thrown(IllegalArgumentException)
     }
+
+    def "can store templates"() {
+        when:
+        service.addTemplate("test", "test template")
+
+        String template = service.getTemplate("test")
+
+        then:
+        template == "test template"
+    }
+
+    def "can report if it has a template doesn't exist already"() {
+        when:
+        boolean hasTemplate = service.hasTemplate("test")
+
+        then:
+        hasTemplate == false
+    }
 }

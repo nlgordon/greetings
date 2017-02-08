@@ -32,6 +32,6 @@ class TemplateServiceImpl implements TemplateService {
     }
 
     boolean hasTemplate(String name) {
-        return false
+        return templates.containsKey(name)
     }
 }

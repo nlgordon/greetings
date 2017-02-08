@@ -32,7 +32,7 @@ class GreetingControllerTest extends Specification {
         1 * controller.greetingService.generateGreeting("template")
     }
 
-    def "when the api for a greeting is called, the greeting service is invoked"() {
+    def "when the api for a greeting is called the status is 200/OK"() {
         setup:
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
 

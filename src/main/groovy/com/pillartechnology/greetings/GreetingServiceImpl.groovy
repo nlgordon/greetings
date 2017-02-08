@@ -1,5 +1,8 @@
 package com.pillartechnology.greetings
 
+import org.springframework.stereotype.Component
+
+@Component
 class GreetingServiceImpl implements GreetingService {
 
     String generateGreeting() {

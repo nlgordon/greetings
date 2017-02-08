@@ -29,6 +29,22 @@ class GreetingControllerTest extends Specification {
         actual == "pong"
     }
 
+    def "when the ping api is called the status is 200/OK"() {
+        when:
+        ResultActions result = mockMvc.perform(get("/api/ping"))
+
+        then:
+        result.andExpect(status().isOk())
+    }
+
+    def "when the ping api is called the return is 'pong'"() {
+        when:
+        ResultActions result = mockMvc.perform(get("/api/ping"))
+
+        then:
+        result.andExpect(content().string("pong"))
+    }
+
     def "gets its greetings from the GreetingService"() {
         when:
         controller.greeting("template")
@@ -44,7 +60,6 @@ class GreetingControllerTest extends Specification {
         then:
         response.greeting == "hello world"
     }
-
 
     def "when the api for a greeting is called the status is 200/OK"() {
         when:

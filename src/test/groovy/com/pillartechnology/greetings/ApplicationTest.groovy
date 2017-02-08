@@ -23,4 +23,20 @@ class ApplicationTest extends Specification {
         then:
         service != null
     }
+
+    def "context contains the greetings controller"() {
+        when:
+        GreetingController controller = context.getBean(GreetingController)
+
+        then:
+        controller != null
+    }
+
+    def "greeting controller has the greeting service wired into it"() {
+        when:
+        GreetingController controller = context.getBean(GreetingController)
+
+        then:
+        controller.greetingService != null
+    }
 }

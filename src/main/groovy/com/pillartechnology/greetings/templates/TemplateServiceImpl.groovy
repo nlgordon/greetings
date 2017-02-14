@@ -30,6 +30,14 @@ class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
+    Template addTemplate(Template template) {
+        if (!template.name) {
+            throw new IllegalArgumentException("Template must have a name")
+        }
+        templates[template.name] = template
+    }
+
+    @Override
     boolean hasTemplate(String name) {
         return templates.containsKey(name)
     }

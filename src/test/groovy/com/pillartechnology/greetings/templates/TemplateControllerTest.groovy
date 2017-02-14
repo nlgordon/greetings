@@ -1,5 +1,6 @@
 package com.pillartechnology.greetings.templates
 
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions
@@ -69,5 +70,15 @@ class TemplateControllerTest extends Specification {
 
         then:
         1 * controller.templateService.addTemplate("foo", "my foo template")
+    }
+
+    def "a posted template object saves to the service"() {
+        when:
+        mockMvc.perform(post("/api/template")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content('{"name": "test", "template": "My Test Template"}'))
+
+        then:
+        1 * controller.templateService.addTemplate(_)
     }
 }

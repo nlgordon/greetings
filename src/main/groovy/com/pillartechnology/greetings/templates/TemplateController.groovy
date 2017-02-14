@@ -4,6 +4,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
@@ -29,6 +30,13 @@ class TemplateController {
         Template newTemplate = templateService.addTemplate(name, template)
 
         return new ResponseEntity<TemplateResponse>(new TemplateResponse(template: newTemplate), HttpStatus.CREATED)
+    }
+
+    @RequestMapping(path = "/api/template", method = [RequestMethod.POST])
+    ResponseEntity<TemplateResponse> addTemplateObject(@RequestBody Template template) {
+        template = templateService.addTemplate(template)
+
+        return new ResponseEntity<TemplateResponse>(new TemplateResponse(template: template), HttpStatus.CREATED)
     }
 
     static class TemplateResponse {

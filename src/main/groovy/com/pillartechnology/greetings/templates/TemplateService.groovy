@@ -5,5 +5,7 @@ interface TemplateService {
 
     Template addTemplate(String name, String template)
 
+    Template addTemplate(Template template)
+
     boolean hasTemplate(String name)
 }

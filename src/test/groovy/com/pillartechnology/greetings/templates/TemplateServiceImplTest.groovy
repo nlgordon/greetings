@@ -72,4 +72,28 @@ class TemplateServiceImplTest extends Specification {
         then:
         hasTemplate == true
     }
+
+    def "can add a template object directly"() {
+        setup:
+        Template input = new Template(name: "test template", template: "My Test Template")
+
+        when:
+        service.addTemplate(input)
+
+        Template template = service.getTemplate("test template")
+
+        then:
+        template == input
+    }
+
+    def "when adding a template object, it must have a name"() {
+        setup:
+        Template input = new Template(template: "My Test Template")
+
+        when:
+        service.addTemplate(input)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
 }

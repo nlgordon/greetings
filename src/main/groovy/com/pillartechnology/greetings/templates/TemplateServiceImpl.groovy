@@ -5,19 +5,13 @@ import org.springframework.stereotype.Component
 @Component
 class TemplateServiceImpl implements TemplateService {
 
-    Map<String, String> templates = [:]
+    Map<String, Template> templates = [:]
 
     @Override
-    String getTemplate(String template) {
+    Template getTemplate(String template) {
 
         if (!template) {
             throw new IllegalArgumentException("No template specified")
-        }
-
-        if (template == 'hello') {
-            return 'hello world'
-        } else if (template == 'valentines') {
-            return 'Happy Valentines Day!'
         }
 
         if (templates.containsKey(template)) {
@@ -28,8 +22,11 @@ class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    void addTemplate(String name, String template) {
-        templates[name] = template
+    Template addTemplate(String name, String template) {
+        Template newTemplate = new Template(name: name, template: template)
+        templates[name] = newTemplate
+
+        return newTemplate
     }
 
     @Override

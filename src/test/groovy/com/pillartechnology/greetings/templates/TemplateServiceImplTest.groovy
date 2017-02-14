@@ -8,22 +8,26 @@ class TemplateServiceImplTest extends Specification {
 
     def setup() {
         service = new TemplateServiceImpl()
+        service.templates = [
+                'hello': new Template(name: 'hello', template: 'hello world'),
+                'valentines': new Template(name: 'valentines', template: 'Happy Valentines Day!')
+        ]
     }
 
     def "the template service returns 'hello world' for the 'hello' template"() {
         when:
-        String template = service.getTemplate('hello')
+        Template template = service.getTemplate('hello')
 
         then:
-        template == 'hello world'
+        template.template == 'hello world'
     }
 
     def "the template service returns a greeting for valentines day"() {
         when:
-        String template = service.getTemplate('valentines')
+        Template template = service.getTemplate('valentines')
 
         then:
-        template == 'Happy Valentines Day!'
+        template.template == 'Happy Valentines Day!'
     }
 
     def "if a template isn't specified, an error is thrown"() {
@@ -36,7 +40,7 @@ class TemplateServiceImplTest extends Specification {
 
     def "if a template isn't known, return null"() {
         when:
-        String template = service.getTemplate("unknown template")
+        Template template = service.getTemplate("unknown template")
 
         then:
         template == null
@@ -46,10 +50,10 @@ class TemplateServiceImplTest extends Specification {
         when:
         service.addTemplate("test", "test template")
 
-        String template = service.getTemplate("test")
+        Template template = service.getTemplate("test")
 
         then:
-        template == "test template"
+        template.template == "test template"
     }
 
     def "can report if a template doesn't exist already"() {

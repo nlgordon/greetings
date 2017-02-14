@@ -16,7 +16,8 @@ class TemplateControllerTest extends Specification {
     def setup() {
         controller = new TemplateController()
         controller.templateService = Mock(TemplateService) {
-            getTemplate("test") >> "test template"
+            getTemplate("test") >> new Template(name: "test", template: "test template")
+            addTemplate(_, _) >> {args -> return new Template(name: args[0], template: args[1]) }
         }
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
@@ -27,7 +28,7 @@ class TemplateControllerTest extends Specification {
         ResponseEntity<TemplateController.TemplateResponse> response = controller.getTemplate("test")
 
         then:
-        response.body.template == "test template"
+        response.body.template.template == "test template"
     }
 
     def "returns a status 200/OK when a template is requested that exists"() {
@@ -59,7 +60,7 @@ class TemplateControllerTest extends Specification {
         ResultActions result = mockMvc.perform(post("/api/template/foo").param("template", "my foo template"))
 
         then:
-        result.andExpect(content().json('{"template": "my foo template"}'))
+        result.andExpect(content().json('{"template": {"name": "foo", "template": "my foo template"}}'))
     }
 
     def "a posted template saves it to the service"() {

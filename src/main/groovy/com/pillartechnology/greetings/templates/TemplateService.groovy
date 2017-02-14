@@ -1,9 +1,9 @@
 package com.pillartechnology.greetings.templates
 
 interface TemplateService {
-    String getTemplate(String template)
+    Template getTemplate(String template)
 
-    void addTemplate(String name, String template)
+    Template addTemplate(String name, String template)
 
     boolean hasTemplate(String name)
 }

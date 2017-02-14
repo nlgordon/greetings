@@ -13,6 +13,6 @@ class GreetingServiceImpl implements GreetingService {
     @Override
     String generateGreeting(String template) {
 
-        return templateService.getTemplate(template)
+        return templateService.getTemplate(template).template
     }
 }

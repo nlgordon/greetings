@@ -27,10 +27,12 @@ class TemplateServiceImpl implements TemplateService {
         return null
     }
 
+    @Override
     void addTemplate(String name, String template) {
         templates[name] = template
     }
 
+    @Override
     boolean hasTemplate(String name) {
         return templates.containsKey(name)
     }

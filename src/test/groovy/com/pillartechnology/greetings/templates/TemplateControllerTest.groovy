@@ -7,6 +7,7 @@ import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
+import static org.hamcrest.Matchers.*
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -61,7 +62,9 @@ class TemplateControllerTest extends Specification {
         ResultActions result = mockMvc.perform(post("/api/template/foo").param("template", "my foo template"))
 
         then:
-        result.andExpect(content().json('{"template": {"name": "foo", "template": "my foo template"}}'))
+        result
+                .andExpect(jsonPath('$.template.name', is("foo")))
+                .andExpect(jsonPath('$.template.template', is("my foo template")))
     }
 
     def "a posted template saves it to the service"() {

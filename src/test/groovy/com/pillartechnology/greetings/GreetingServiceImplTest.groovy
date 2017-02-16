@@ -22,4 +22,26 @@ class GreetingServiceImplTest extends Specification {
         then:
         greeting.greeting == "test template"
     }
+
+    def "saveGreeting sets the id of the greeting"() {
+        setup:
+        Greeting input = new Greeting(templateName: "test")
+
+        when:
+        Greeting greeting = service.saveGreeting(input)
+
+        then:
+        greeting.id != null
+    }
+
+    def "saveGreeting sets the greeting of the greeting"() {
+        setup:
+        Greeting input = new Greeting(templateName: "test")
+
+        when:
+        Greeting greeting = service.saveGreeting(input)
+
+        then:
+        greeting.greeting == "test template"
+    }
 }

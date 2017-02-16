@@ -1,10 +1,13 @@
 package com.pillartechnology.greetings
 
+import com.google.gson.Gson
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
+
+import static org.hamcrest.Matchers.*
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -14,14 +17,18 @@ class GreetingControllerTest extends Specification {
     MockMvc mockMvc
 
     Greeting mockGreeting
+    Gson gson
 
     def setup() {
         mockGreeting = new Greeting(greeting: "hello world")
         controller = new GreetingController()
         controller.greetingService = Mock(GreetingService)
         controller.greetingService.generateGreeting(_) >> mockGreeting
+        controller.greetingService.saveGreeting(_) >> { Greeting greeting -> return greeting }
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+
+        gson = new Gson()
     }
 
     def "responds to a ping request"() {
@@ -61,7 +68,7 @@ class GreetingControllerTest extends Specification {
         GreetingController.GreetingResponse response = controller.greeting("template")
 
         then:
-        response.greeting == "hello world"
+        response.greeting.greeting == "hello world"
     }
 
     def "when the api for a greeting is called the status is 200/OK"() {
@@ -101,6 +108,39 @@ class GreetingControllerTest extends Specification {
         ResultActions result = mockMvc.perform(get("/api/greeting?template=foo"))
 
         then:
-        result.andExpect(content().json('{"greeting": "hello world"}'))
+        result.andExpect(jsonPath('$.greeting.greeting', is("hello world")))
+    }
+
+    def "posts to the greeting endpoint generate a greeting object"() {
+        setup:
+        Greeting request = new Greeting(templateName: "test")
+
+        when:
+        ResultActions result = postGreetingRequest(request)
+
+        then:
+        result
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath('$.greeting.templateName', is("test")))
+    }
+
+    def "posts to the greeting endpoint save to the service"() {
+        setup:
+        Greeting request = new Greeting(templateName: "test")
+
+        when:
+        postGreetingRequest(request)
+
+        then:
+        1 * controller.greetingService.saveGreeting(_) >> { Greeting greeting ->
+            greeting.greeting = "hello world"
+            return greeting
+        }
+    }
+
+    ResultActions postGreetingRequest(Greeting request) {
+        return mockMvc.perform(post("/api/greeting")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(gson.toJson(request)))
     }
 }

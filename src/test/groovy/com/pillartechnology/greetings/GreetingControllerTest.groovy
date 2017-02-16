@@ -13,10 +13,13 @@ class GreetingControllerTest extends Specification {
     GreetingController controller
     MockMvc mockMvc
 
+    Greeting mockGreeting
+
     def setup() {
+        mockGreeting = new Greeting(greeting: "hello world")
         controller = new GreetingController()
         controller.greetingService = Mock(GreetingService)
-        controller.greetingService.generateGreeting(_) >> "hello world"
+        controller.greetingService.generateGreeting(_) >> mockGreeting
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
     }
@@ -50,12 +53,12 @@ class GreetingControllerTest extends Specification {
         controller.greeting("template")
 
         then:
-        1 * controller.greetingService.generateGreeting("template")
+        1 * controller.greetingService.generateGreeting(_) >> mockGreeting
     }
 
     def "returns a GreetingResponse object with the greeting populated"() {
         when:
-        GreetingController.GreetingResponse response = controller.greeting("template");
+        GreetingController.GreetingResponse response = controller.greeting("template")
 
         then:
         response.greeting == "hello world"
@@ -82,7 +85,7 @@ class GreetingControllerTest extends Specification {
         mockMvc.perform(get("/api/greeting?template=hello world").accept(MediaType.APPLICATION_JSON_UTF8))
 
         then:
-        1 * controller.greetingService.generateGreeting("hello world")
+        1 * controller.greetingService.generateGreeting("hello world") >> mockGreeting
     }
 
     def "when the api is called without a template parameter, a 400 status is returned"() {

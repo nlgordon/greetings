@@ -17,9 +17,9 @@ class GreetingServiceImplTest extends Specification {
 
     def "gets the template for the greeting from the template service"() {
         when:
-        String greeting = service.generateGreeting("test")
+        Greeting greeting = service.generateGreeting("test")
 
         then:
-        greeting == "test template"
+        greeting.greeting == "test template"
     }
 }

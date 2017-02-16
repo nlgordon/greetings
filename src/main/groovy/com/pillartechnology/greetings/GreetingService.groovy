@@ -1,5 +1,5 @@
 package com.pillartechnology.greetings
 
 interface GreetingService {
-    String generateGreeting(String template)
+    Greeting generateGreeting(String template)
 }

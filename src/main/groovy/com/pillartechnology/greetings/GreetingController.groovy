@@ -18,7 +18,8 @@ class GreetingController {
 
     @RequestMapping("/api/greeting")
     GreetingResponse greeting(@RequestParam(name = "template") String template) {
-        return new GreetingResponse(greeting: greetingService.generateGreeting(template))
+        Greeting greeting = greetingService.generateGreeting(template)
+        return new GreetingResponse(greeting: greeting.greeting)
     }
 
     static class GreetingResponse {

@@ -11,8 +11,11 @@ class GreetingServiceImpl implements GreetingService {
     TemplateService templateService
 
     @Override
-    String generateGreeting(String template) {
+    Greeting generateGreeting(String template) {
 
-        return templateService.getTemplate(template).template
+        Greeting ret = new Greeting()
+        ret.greeting = templateService.getTemplate(template).template
+
+        return ret
     }
 }

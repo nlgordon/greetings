@@ -25,16 +25,20 @@ class GreetingController {
     @RequestMapping(path = "/api/greeting", method = [RequestMethod.POST])
     ResponseEntity<GreetingResponse> saveGreeting(@RequestBody Greeting greeting) {
         greeting = greetingService.saveGreeting(greeting)
-        return new ResponseEntity<GreetingResponse>(new GreetingResponse(greeting: greeting), HttpStatus.CREATED)
+        return generateResponse(greeting, HttpStatus.CREATED)
     }
 
     @RequestMapping(path = "/api/greeting/{uuid}", method = [RequestMethod.GET])
     ResponseEntity<GreetingResponse> getGreeting(@PathVariable UUID uuid) {
         Greeting greeting = greetingService.getGreeting(uuid)
         if (!greeting) {
-            return new ResponseEntity<GreetingResponse>(new GreetingResponse(), HttpStatus.NOT_FOUND)
+            return generateResponse(null, HttpStatus.NOT_FOUND)
         }
-        return new ResponseEntity<GreetingResponse>(new GreetingResponse(greeting: greeting), HttpStatus.OK);
+        return generateResponse(greeting, HttpStatus.OK)
+    }
+
+    ResponseEntity<GreetingResponse> generateResponse(Greeting greeting, HttpStatus status) {
+        return new ResponseEntity<GreetingResponse>(new GreetingResponse(greeting: greeting), status)
     }
 
     static class GreetingResponse {

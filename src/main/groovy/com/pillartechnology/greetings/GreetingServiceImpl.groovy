@@ -1,6 +1,5 @@
 package com.pillartechnology.greetings
 
-import com.pillartechnology.greetings.templates.Template
 import com.pillartechnology.greetings.templates.TemplateService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -14,18 +13,16 @@ class GreetingServiceImpl implements GreetingService {
 
     @Override
     Greeting generateGreeting(String template) {
+        Greeting greeting = new Greeting()
+        greeting.greeting = getTemplate(template)
 
-        Greeting ret = new Greeting()
-        ret.greeting = templateService.getTemplate(template).template
-
-        return ret
+        return greeting
     }
 
     @Override
     Greeting saveGreeting(Greeting greeting) {
         greeting.id = UUID.randomUUID()
-        Template template = templateService.getTemplate(greeting.templateName)
-        greeting.greeting = template.template
+        greeting.greeting = getTemplate(greeting.templateName)
         greetings[greeting.id] = greeting
         return greeting
     }
@@ -33,5 +30,9 @@ class GreetingServiceImpl implements GreetingService {
     @Override
     Greeting getGreeting(UUID uuid) {
         return greetings[uuid]
+    }
+
+    String getTemplate(String template) {
+        return templateService.getTemplate(template).template
     }
 }

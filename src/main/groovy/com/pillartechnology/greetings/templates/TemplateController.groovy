@@ -13,24 +13,28 @@ class TemplateController {
     ResponseEntity<TemplateResponse> getTemplate(@PathVariable String name) {
         Template template = templateService.getTemplate(name)
         if (template == null) {
-            return new ResponseEntity<String>("Template $name was not found", HttpStatus.NOT_FOUND)
+            return generateResponse(null, HttpStatus.NOT_FOUND)
         }
 
-        return new ResponseEntity<TemplateResponse>(new TemplateResponse(template: template), HttpStatus.OK)
+        return generateResponse(template, HttpStatus.OK)
     }
 
     @RequestMapping(path = "/api/template/{name}", method = [RequestMethod.POST])
     ResponseEntity<TemplateResponse> addTemplate(@PathVariable String name, @RequestParam String template) {
         Template newTemplate = templateService.addTemplate(name, template)
 
-        return new ResponseEntity<TemplateResponse>(new TemplateResponse(template: newTemplate), HttpStatus.CREATED)
+        return generateResponse(newTemplate, HttpStatus.CREATED)
     }
 
     @RequestMapping(path = "/api/template", method = [RequestMethod.POST])
     ResponseEntity<TemplateResponse> addTemplateObject(@RequestBody Template template) {
         template = templateService.addTemplate(template)
 
-        return new ResponseEntity<TemplateResponse>(new TemplateResponse(template: template), HttpStatus.CREATED)
+        return generateResponse(template, HttpStatus.CREATED)
+    }
+
+    ResponseEntity<TemplateResponse> generateResponse(Template template, HttpStatus status) {
+        return new ResponseEntity<TemplateResponse>(new TemplateResponse(template: template), status)
     }
 
     static class TemplateResponse {

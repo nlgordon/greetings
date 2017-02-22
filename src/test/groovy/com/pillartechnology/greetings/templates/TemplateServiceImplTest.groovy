@@ -65,8 +65,10 @@ class TemplateServiceImplTest extends Specification {
     }
 
     def "can report if a template does exist already"() {
+        setup:
+        service.templates["test"] = new Template()
+
         when:
-        service.addTemplate("test", "test template")
         boolean hasTemplate = service.hasTemplate("test")
 
         then:
@@ -80,10 +82,8 @@ class TemplateServiceImplTest extends Specification {
         when:
         service.addTemplate(input)
 
-        Template template = service.getTemplate("test template")
-
         then:
-        template == input
+        service.templates["test template"] == input
     }
 
     def "when adding a template object, it must have a name"() {

@@ -53,25 +53,31 @@ class TemplateControllerTest extends Specification {
 
     def "allows posting a template"() {
         when:
-        ResultActions result = mockMvc.perform(post("/api/template/foo").param("template", "my foo template"))
+        ResultActions result = postNewTemplate()
 
         then:
         result.andExpect(status().isCreated())
     }
 
-    def "posting a template returns the created template"() {
+    def "posting a template returns the created template with the name from the url"() {
         when:
-        ResultActions result = mockMvc.perform(post("/api/template/foo").param("template", "my foo template"))
+        ResultActions result = postNewTemplate()
 
         then:
-        result
-                .andExpect(jsonPath('$.template.name', is("foo")))
-                .andExpect(jsonPath('$.template.template', is("my foo template")))
+        result.andExpect(jsonPath('$.template.name', is("foo")))
+    }
+
+    def "posting a template returns the created template with the template based on the form param"() {
+        when:
+        ResultActions result = postNewTemplate()
+
+        then:
+        result.andExpect(jsonPath('$.template.template', is("my foo template")))
     }
 
     def "a posted template saves it to the service"() {
         when:
-        mockMvc.perform(post("/api/template/foo").param("template", "my foo template"))
+        postNewTemplate()
 
         then:
         1 * controller.templateService.addTemplate("foo", "my foo template")
@@ -85,5 +91,9 @@ class TemplateControllerTest extends Specification {
 
         then:
         1 * controller.templateService.addTemplate(_)
+    }
+
+    ResultActions postNewTemplate() {
+        return mockMvc.perform(post("/api/template/foo").param("template", "my foo template"))
     }
 }

@@ -9,12 +9,11 @@ class TemplateServiceImpl implements TemplateService {
 
     @Override
     Template getTemplate(String template) {
-
         if (!template) {
             throw new IllegalArgumentException("No template specified")
         }
 
-        if (templates.containsKey(template)) {
+        if (hasTemplate(template)) {
             return templates[template]
         }
 

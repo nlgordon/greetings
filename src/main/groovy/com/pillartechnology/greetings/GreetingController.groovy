@@ -3,11 +3,7 @@ package com.pillartechnology.greetings
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class GreetingController {
@@ -30,6 +26,15 @@ class GreetingController {
     ResponseEntity<GreetingResponse> saveGreeting(@RequestBody Greeting greeting) {
         greeting = greetingService.saveGreeting(greeting)
         return new ResponseEntity<GreetingResponse>(new GreetingResponse(greeting: greeting), HttpStatus.CREATED)
+    }
+
+    @RequestMapping(path = "/api/greeting/{uuid}", method = [RequestMethod.GET])
+    ResponseEntity<GreetingResponse> getGreeting(@PathVariable UUID uuid) {
+        Greeting greeting = greetingService.getGreeting(uuid)
+        if (!greeting) {
+            return new ResponseEntity<GreetingResponse>(new GreetingResponse(), HttpStatus.NOT_FOUND)
+        }
+        return new ResponseEntity<GreetingResponse>(new GreetingResponse(greeting: greeting), HttpStatus.OK);
     }
 
     static class GreetingResponse {

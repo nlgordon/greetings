@@ -30,6 +30,7 @@ class GreetingServiceImpl implements GreetingService {
         return greeting
     }
 
+    @Override
     Greeting getGreeting(UUID uuid) {
         return greetings[uuid]
     }

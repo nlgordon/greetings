@@ -7,8 +7,9 @@ import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
-import static org.hamcrest.Matchers.*
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import static org.hamcrest.Matchers.is
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 class GreetingControllerTest extends Specification {
@@ -138,9 +139,50 @@ class GreetingControllerTest extends Specification {
         }
     }
 
+    def "gets to a uuid url return 200 OK"() {
+        setup:
+        UUID uuid = UUID.randomUUID()
+        Greeting expected = new Greeting(id: uuid)
+        controller.greetingService.getGreeting(uuid) >> expected
+
+        when:
+        ResultActions result = getGreetingResponse(uuid)
+
+        then:
+        result.andExpect(status().isOk())
+    }
+
+    def "gets to a uuid url return a greeting response"() {
+        setup:
+        UUID uuid = UUID.randomUUID()
+        Greeting expected = new Greeting(id: uuid)
+        controller.greetingService.getGreeting(uuid) >> expected
+
+        when:
+        ResultActions result = getGreetingResponse(uuid)
+
+        then:
+        result.andExpect(jsonPath('$.greeting.id', is(uuid.toString())))
+    }
+
+    def "gets to a uuid url of unknown greeting return 404"() {
+        setup:
+        UUID uuid = UUID.randomUUID()
+
+        when:
+        ResultActions result = getGreetingResponse(uuid)
+
+        then:
+        result.andExpect(status().isNotFound())
+    }
+
     ResultActions postGreetingRequest(Greeting request) {
         return mockMvc.perform(post("/api/greeting")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(gson.toJson(request)))
+    }
+
+    ResultActions getGreetingResponse(UUID uuid) {
+        return mockMvc.perform(get("/api/greeting/$uuid").accept(MediaType.APPLICATION_JSON_UTF8))
     }
 }

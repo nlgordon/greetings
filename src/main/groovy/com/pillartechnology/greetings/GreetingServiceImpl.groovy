@@ -10,6 +10,7 @@ class GreetingServiceImpl implements GreetingService {
 
     @Autowired
     TemplateService templateService
+    Map<UUID, Greeting> greetings = [:]
 
     @Override
     Greeting generateGreeting(String template) {
@@ -25,6 +26,11 @@ class GreetingServiceImpl implements GreetingService {
         greeting.id = UUID.randomUUID()
         Template template = templateService.getTemplate(greeting.templateName)
         greeting.greeting = template.template
+        greetings[greeting.id] = greeting
         return greeting
+    }
+
+    Greeting getGreeting(UUID uuid) {
+        return greetings[uuid]
     }
 }

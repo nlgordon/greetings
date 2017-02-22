@@ -7,6 +7,7 @@ import spock.lang.Specification
 class GreetingServiceImplTest extends Specification {
 
     GreetingServiceImpl service
+    Greeting input = new Greeting(id: UUID.randomUUID(), templateName: "test")
 
     def setup() {
         service = new GreetingServiceImpl()
@@ -24,9 +25,6 @@ class GreetingServiceImplTest extends Specification {
     }
 
     def "saveGreeting sets the id of the greeting"() {
-        setup:
-        Greeting input = new Greeting(templateName: "test")
-
         when:
         Greeting greeting = service.saveGreeting(input)
 
@@ -35,13 +33,31 @@ class GreetingServiceImplTest extends Specification {
     }
 
     def "saveGreeting sets the greeting of the greeting"() {
-        setup:
-        Greeting input = new Greeting(templateName: "test")
-
         when:
         Greeting greeting = service.saveGreeting(input)
 
         then:
         greeting.greeting == "test template"
+    }
+
+    def "saveGreeting saves the greeting to persistent-ish storage"() {
+        when:
+        service.saveGreeting(input)
+
+        then:
+        service.greetings[input.id] == input
+    }
+
+    def "getGreeting gets a greeting by uuid"() {
+        setup:
+        UUID uuid = UUID.randomUUID()
+        def expected = new Greeting(id: uuid)
+        service.greetings[uuid] = expected
+
+        when:
+        Greeting actual = service.getGreeting(uuid)
+
+        then:
+        actual == expected
     }
 }

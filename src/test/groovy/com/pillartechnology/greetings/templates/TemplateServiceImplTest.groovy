@@ -9,7 +9,7 @@ class TemplateServiceImplTest extends Specification {
     def setup() {
         service = new TemplateServiceImpl()
         service.templates = [
-                'hello': new Template(name: 'hello', template: 'hello world'),
+                'hello'     : new Template(name: 'hello', template: 'hello world'),
                 'valentines': new Template(name: 'valentines', template: 'Happy Valentines Day!')
         ]
     }

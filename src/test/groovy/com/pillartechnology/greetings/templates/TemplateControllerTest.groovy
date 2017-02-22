@@ -7,9 +7,11 @@ import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
-import static org.hamcrest.Matchers.*
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import static org.hamcrest.Matchers.is
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 class TemplateControllerTest extends Specification {
     TemplateController controller
@@ -19,7 +21,7 @@ class TemplateControllerTest extends Specification {
         controller = new TemplateController()
         controller.templateService = Mock(TemplateService) {
             getTemplate("test") >> new Template(name: "test", template: "test template")
-            addTemplate(_, _) >> {args -> return new Template(name: args[0], template: args[1]) }
+            addTemplate(_, _) >> { args -> return new Template(name: args[0], template: args[1]) }
         }
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()

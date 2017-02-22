@@ -112,6 +112,17 @@ class GreetingControllerTest extends Specification {
         result.andExpect(jsonPath('$.greeting.greeting', is("hello world")))
     }
 
+    def "posts to the greeting endpoint return status created"() {
+        setup:
+        Greeting request = new Greeting(templateName: "test")
+
+        when:
+        ResultActions result = postGreetingRequest(request)
+
+        then:
+        result.andExpect(status().isCreated())
+    }
+
     def "posts to the greeting endpoint generate a greeting object"() {
         setup:
         Greeting request = new Greeting(templateName: "test")
@@ -120,9 +131,7 @@ class GreetingControllerTest extends Specification {
         ResultActions result = postGreetingRequest(request)
 
         then:
-        result
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath('$.greeting.templateName', is("test")))
+        result.andExpect(jsonPath('$.greeting.templateName', is("test")))
     }
 
     def "posts to the greeting endpoint save to the service"() {

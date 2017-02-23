@@ -1,5 +1,7 @@
 package com.pillartechnology.greetings
 
+import com.pillartechnology.greetings.templates.TemplateController
+import com.pillartechnology.greetings.templates.TemplateServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
@@ -46,5 +48,13 @@ class ApplicationTest extends Specification {
 
         then:
         service.templateService != null
+    }
+
+    def "template controller has the template service wired into it"() {
+        when:
+        TemplateController controller = context.getBean(TemplateController)
+
+        then:
+        controller.templateService != null
     }
 }

@@ -40,4 +40,9 @@ class TemplateServiceImpl implements TemplateService {
     boolean hasTemplate(String name) {
         return templates.containsKey(name)
     }
+
+    @Override
+    void truncateTemplates() {
+        templates = [:]
+    }
 }

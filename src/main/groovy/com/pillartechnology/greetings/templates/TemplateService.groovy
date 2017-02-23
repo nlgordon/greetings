@@ -8,4 +8,6 @@ interface TemplateService {
     Template addTemplate(Template template)
 
     boolean hasTemplate(String name)
+
+    void truncateTemplates()
 }

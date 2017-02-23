@@ -96,4 +96,15 @@ class TemplateServiceImplTest extends Specification {
         then:
         thrown(IllegalArgumentException)
     }
+
+    def "saved templates can be cleared"() {
+        setup:
+        service.templates["foo"] = new Template()
+
+        when:
+        service.truncateTemplates()
+
+        then:
+        !service.templates
+    }
 }

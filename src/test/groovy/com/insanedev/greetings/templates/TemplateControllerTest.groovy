@@ -1,4 +1,4 @@
-package com.pillartechnology.greetings.templates
+package com.insanedev.greetings.templates
 
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity

@@ -1,7 +1,7 @@
-package com.pillartechnology.greetings
+package com.insanedev.greetings
 
-import com.pillartechnology.greetings.templates.TemplateController
-import com.pillartechnology.greetings.templates.TemplateServiceImpl
+import com.insanedev.greetings.templates.TemplateController
+import com.insanedev.greetings.templates.TemplateServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate

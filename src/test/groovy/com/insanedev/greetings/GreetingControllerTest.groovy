@@ -1,4 +1,4 @@
-package com.pillartechnology.greetings
+package com.insanedev.greetings
 
 import com.google.gson.Gson
 import org.springframework.http.MediaType

@@ -1,4 +1,4 @@
-package com.pillartechnology.greetings.templates
+package com.insanedev.greetings.templates
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus

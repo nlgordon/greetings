@@ -1,4 +1,4 @@
-package com.pillartechnology.greetings.templates
+package com.insanedev.greetings.templates
 
 interface TemplateService {
     Template getTemplate(String template)

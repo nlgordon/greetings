@@ -1,6 +1,6 @@
-package com.pillartechnology.greetings
+package com.insanedev.greetings
 
-import com.pillartechnology.greetings.templates.TemplateService
+import com.insanedev.greetings.templates.TemplateService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

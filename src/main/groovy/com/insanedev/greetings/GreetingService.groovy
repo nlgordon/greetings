@@ -1,4 +1,4 @@
-package com.pillartechnology.greetings
+package com.insanedev.greetings
 
 interface GreetingService {
     Greeting generateGreeting(String template)

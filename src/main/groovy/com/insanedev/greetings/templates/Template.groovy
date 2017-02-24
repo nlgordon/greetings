@@ -1,4 +1,4 @@
-package com.pillartechnology.greetings.templates
+package com.insanedev.greetings.templates
 
 class Template {
     String name

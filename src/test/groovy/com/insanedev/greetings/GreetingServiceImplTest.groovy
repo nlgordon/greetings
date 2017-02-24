@@ -1,7 +1,7 @@
-package com.pillartechnology.greetings
+package com.insanedev.greetings
 
-import com.pillartechnology.greetings.templates.Template
-import com.pillartechnology.greetings.templates.TemplateService
+import com.insanedev.greetings.templates.Template
+import com.insanedev.greetings.templates.TemplateService
 import spock.lang.Specification
 
 class GreetingServiceImplTest extends Specification {

@@ -1,4 +1,4 @@
-package com.pillartechnology.greetings
+package com.insanedev.greetings
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.embedded.LocalServerPort

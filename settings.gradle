@@ -1,1 +1,3 @@
 rootProject.name = 'greetings'
+include 'discovery'
+project(':discovery').projectDir = new File('services/discovery')

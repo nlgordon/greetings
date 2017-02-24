@@ -1,36 +1,44 @@
 plugins {
     id 'org.springframework.boot' version '1.5.1.RELEASE'
-    id 'groovy'
 }
 
-group 'com.insanedev'
-version '0.1-SNAPSHOT'
+allprojects {
+    apply plugin: 'groovy'
+    apply plugin: 'org.springframework.boot'
 
-repositories  {
-    jcenter()
-}
+    group 'com.insanedev'
+    version '0.1-SNAPSHOT'
 
-sourceSets {
-    integration {
-        compileClasspath += sourceSets.test.runtimeClasspath
-        runtimeClasspath += sourceSets.test.runtimeClasspath
+    repositories {
+        jcenter()
+    }
+
+    sourceSets {
+        integration {
+            compileClasspath += sourceSets.test.runtimeClasspath
+            runtimeClasspath += sourceSets.test.runtimeClasspath
+        }
+    }
+
+    configurations.integrationCompile.extendsFrom(configurations.testCompile)
+
+    dependencies {
+        compile 'org.codehaus.groovy:groovy-all'
+        compile 'org.springframework.boot:spring-boot-starter-web'
+        compile 'org.springframework.boot:spring-boot-starter-actuator'
+        testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-3'
+        testCompile 'org.springframework.boot:spring-boot-starter-test'
+        testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4-rc-2'
+    }
+
+    task integrationTest(type: Test) {
+        testClassesDir = sourceSets.integration.output.classesDir
+        classpath = sourceSets.integration.runtimeClasspath
     }
 }
 
-configurations.integrationCompile.extendsFrom(configurations.testCompile)
-
 dependencies {
-	compile 'org.codehaus.groovy:groovy-all'
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-3'
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4-rc-2'
     testCompile 'com.google.code.gson:gson'
-}
-
-task integrationTest(type: Test) {
-    testClassesDir = sourceSets.integration.output.classesDir
-    classpath = sourceSets.integration.runtimeClasspath
 }
 
 task wrapper(type: Wrapper) {

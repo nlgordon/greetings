@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class TestConfigServer extends Specification {
+class ApplicationTest extends Specification {
     @Autowired
     TestRestTemplate restTemplate
 

@@ -1,3 +1,5 @@
 rootProject.name = 'greetings'
 include 'services:discovery'
 include 'services:config'
+include 'services:gateway'
+include 'services:gateway'

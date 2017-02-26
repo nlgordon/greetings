@@ -7,3 +7,6 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
+
+endpoints:
+  sensitive: false

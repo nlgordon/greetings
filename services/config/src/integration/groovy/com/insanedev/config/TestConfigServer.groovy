@@ -20,4 +20,12 @@ class TestConfigServer extends Specification {
         then:
         response.statusCode == HttpStatus.OK
     }
+
+    def "the basic config has the eureka url"() {
+        when:
+        ResponseEntity<Map> response = restTemplate.exchange("/application/default", HttpMethod.GET, null, Map)
+
+        then:
+        response.body["propertySources"][0]["source"]["eureka.client.serviceUrl.defaultZone"] == "http://localhost:8761/eureka/"
+    }
 }

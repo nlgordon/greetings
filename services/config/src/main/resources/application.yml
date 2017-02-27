@@ -10,7 +10,7 @@ spring:
     config:
       server:
         native:
-          search-locations: file://${user.home}/git/greetings/config
+          search-locations: file://${user.home}/git/greetings/services/config/config-files
         git:
           uri: file://${user.home}/git/greetings
-          basedir: config
+          basedir: services/config/config-files

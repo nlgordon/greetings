@@ -10,4 +10,6 @@ interface TemplateService {
     boolean hasTemplate(String name)
 
     void truncateTemplates()
+
+    Map<String, Template> getAllTemplates()
 }

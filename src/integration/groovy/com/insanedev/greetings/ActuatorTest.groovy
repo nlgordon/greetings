@@ -20,4 +20,12 @@ class ActuatorTest extends Specification {
         then:
         response.statusCode == HttpStatus.OK
     }
+
+    def "env endpoint is not secured"() {
+        when:
+        ResponseEntity<String> response = restTemplate.exchange("/env", HttpMethod.GET, null, String)
+
+        then:
+        response.statusCode == HttpStatus.OK
+    }
 }

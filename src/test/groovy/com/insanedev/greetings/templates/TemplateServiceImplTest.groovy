@@ -107,4 +107,12 @@ class TemplateServiceImplTest extends Specification {
         then:
         !service.templates
     }
+
+    def "can get a map of current templates"() {
+        when:
+        Map templates = service.getAllTemplates()
+
+        then:
+        templates.size() == 2
+    }
 }

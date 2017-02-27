@@ -11,6 +11,17 @@ class TemplateController {
     @Autowired
     TemplateService templateService
 
+    @RequestMapping(path = "/api/template", method = [RequestMethod.GET])
+    ResponseEntity<Map<String, Template>> getAllTemplates() {
+        return new ResponseEntity<Map<String,Template>>(templateService.getAllTemplates(), HttpStatus.OK)
+    }
+
+    @RequestMapping(path = "/api/template", method = [RequestMethod.DELETE])
+    ResponseEntity<String> deleteAllTemplates() {
+        templateService.getAllTemplates()
+        return new ResponseEntity<String>("templates deleted", HttpStatus.OK)
+    }
+
     @RequestMapping("/api/template/{name}")
     ResponseEntity<TemplateResponse> getTemplate(@PathVariable String name) {
         Template template = templateService.getTemplate(name)
@@ -37,9 +48,5 @@ class TemplateController {
 
     ResponseEntity<TemplateResponse> generateResponse(Template template, HttpStatus status) {
         return new ResponseEntity<TemplateResponse>(new TemplateResponse(template: template), status)
-    }
-
-    static class TemplateResponse {
-        Template template
     }
 }

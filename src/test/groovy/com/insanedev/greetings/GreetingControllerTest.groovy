@@ -66,7 +66,7 @@ class GreetingControllerTest extends Specification {
 
     def "returns a GreetingResponse object with the greeting populated"() {
         when:
-        GreetingController.GreetingResponse response = controller.greeting("template")
+        GreetingResponse response = controller.greeting("template")
 
         then:
         response.greeting.greeting == "hello world"

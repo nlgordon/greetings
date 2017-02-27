@@ -45,4 +45,9 @@ class TemplateServiceImpl implements TemplateService {
     void truncateTemplates() {
         templates = [:]
     }
+
+    @Override
+    Map getAllTemplates() {
+        return templates
+    }
 }

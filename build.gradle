@@ -20,8 +20,6 @@ allprojects {
         }
     }
 
-    configurations.integrationCompile.extendsFrom(configurations.testCompile)
-
     dependencies {
         compile 'org.codehaus.groovy:groovy-all'
         compile 'org.springframework.boot:spring-boot-starter-web'
@@ -35,9 +33,19 @@ allprojects {
         testClassesDir = sourceSets.integration.output.classesDir
         classpath = sourceSets.integration.runtimeClasspath
     }
+
+    task createGeneratedSrcDir() {
+        def generatedSrcDir = file("$buildDir/generatedSrc")
+        outputs.dir(generatedSrcDir)
+        doLast {
+            generatedSrcDir.mkdirs()
+        }
+    }
 }
 
 dependencies {
+    compile project(':api:template')
+    compile project(':api:greeting')
     testCompile 'com.google.code.gson:gson'
 }
 

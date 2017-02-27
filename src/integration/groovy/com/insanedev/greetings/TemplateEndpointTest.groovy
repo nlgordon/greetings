@@ -1,7 +1,7 @@
 package com.insanedev.greetings
 
-import com.insanedev.greetings.templates.TemplateController
-import com.insanedev.greetings.templates.TemplateServiceImpl
+import com.insanedev.greetings.templates.TemplateResponse
+import com.insanedev.greetings.templates.TemplateService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -14,7 +14,7 @@ class TemplateEndpointTest extends Specification {
     TestRestTemplate restTemplate
 
     @Autowired
-    TemplateServiceImpl templateService
+    TemplateService templateService
 
     def setup() {
         templateService.truncateTemplates()
@@ -29,7 +29,7 @@ class TemplateEndpointTest extends Specification {
         templateService.addTemplate("test", "hello world")
 
         when:
-        TemplateController.TemplateResponse response = restTemplate.getForObject("/api/template/test", TemplateController.TemplateResponse)
+        TemplateResponse response = restTemplate.getForObject("/api/template/test", TemplateResponse)
 
         then:
         response.template.name == "test"

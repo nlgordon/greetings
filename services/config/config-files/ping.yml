@@ -1,4 +1,4 @@
 server:
-  port: 8081
+  port: 0
 
 ping: foo

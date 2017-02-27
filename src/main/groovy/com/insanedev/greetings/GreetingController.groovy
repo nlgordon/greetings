@@ -40,8 +40,4 @@ class GreetingController {
     ResponseEntity<GreetingResponse> generateResponse(Greeting greeting, HttpStatus status) {
         return new ResponseEntity<GreetingResponse>(new GreetingResponse(greeting: greeting), status)
     }
-
-    static class GreetingResponse {
-        Greeting greeting
-    }
 }

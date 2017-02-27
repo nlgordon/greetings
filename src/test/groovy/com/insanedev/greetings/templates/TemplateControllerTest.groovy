@@ -10,6 +10,7 @@ import spock.lang.Specification
 import static org.hamcrest.Matchers.is
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -22,6 +23,7 @@ class TemplateControllerTest extends Specification {
         controller.templateService = Mock(TemplateService) {
             getTemplate("test") >> new Template(name: "test", template: "test template")
             addTemplate(_, _) >> { args -> return new Template(name: args[0], template: args[1]) }
+            getAllTemplates() >> ["test": new Template(name: "test", template: "test template")]
         }
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
@@ -29,7 +31,7 @@ class TemplateControllerTest extends Specification {
 
     def "allows asking for a template from the template service"() {
         when:
-        ResponseEntity<TemplateController.TemplateResponse> response = controller.getTemplate("test")
+        ResponseEntity<TemplateResponse> response = controller.getTemplate("test")
 
         then:
         response.body.template.template == "test template"
@@ -91,6 +93,30 @@ class TemplateControllerTest extends Specification {
 
         then:
         1 * controller.templateService.addTemplate(_)
+    }
+
+    def "can get all templates"() {
+        when:
+        ResultActions result = mockMvc.perform(get("/api/template"))
+
+        then:
+        result.andExpect(status().isOk())
+    }
+
+    def "getting all templates returns the test template"() {
+        when:
+        ResultActions result = mockMvc.perform(get("/api/template"))
+
+        then:
+        result.andExpect(jsonPath('$.test.name', is("test")))
+    }
+
+    def "can truncate all templates"() {
+        when:
+        ResultActions result = mockMvc.perform(delete("/api/template"))
+
+        then:
+        result.andExpect(status().isOk())
     }
 
     ResultActions postNewTemplate() {

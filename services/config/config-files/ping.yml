@@ -2,3 +2,7 @@ server:
   port: 0
 
 ping: pong
+
+logging:
+  level:
+    org.springframework.web: DEBUG

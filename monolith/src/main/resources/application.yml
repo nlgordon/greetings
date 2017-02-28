@@ -6,3 +6,7 @@ greetingsBaseUrl: /api/greeting
 templatesBaseUrl: /api/template
 
 pingBaseUrl: /api/ping
+
+logging:
+  level:
+    org.springframework.web: INFO

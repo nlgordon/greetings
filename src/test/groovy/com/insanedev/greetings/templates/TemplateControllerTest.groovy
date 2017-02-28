@@ -18,6 +18,8 @@ class TemplateControllerTest extends Specification {
     TemplateController controller
     MockMvc mockMvc
 
+    String templatesBaseUrl = "/api/templates"
+
     def setup() {
         controller = new TemplateController()
         controller.templateService = Mock(TemplateService) {
@@ -26,7 +28,9 @@ class TemplateControllerTest extends Specification {
             getAllTemplates() >> ["test": new Template(name: "test", template: "test template")]
         }
 
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .addPlaceholderValue("templatesBaseUrl", templatesBaseUrl)
+                .build()
     }
 
     def "allows asking for a template from the template service"() {
@@ -39,7 +43,7 @@ class TemplateControllerTest extends Specification {
 
     def "returns a status 200/OK when a template is requested that exists"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/template/test"))
+        ResultActions result = mockMvc.perform(get("$templatesBaseUrl/test"))
 
         then:
         result.andExpect(status().isOk())
@@ -47,7 +51,7 @@ class TemplateControllerTest extends Specification {
 
     def "returns a 404 when a template is requested that does not exist"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/template/foo"))
+        ResultActions result = mockMvc.perform(get("$templatesBaseUrl/foo"))
 
         then:
         result.andExpect(status().isNotFound())
@@ -87,7 +91,7 @@ class TemplateControllerTest extends Specification {
 
     def "a posted template object saves to the service"() {
         when:
-        mockMvc.perform(post("/api/template")
+        mockMvc.perform(post(templatesBaseUrl)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content('{"name": "test", "template": "My Test Template"}'))
 
@@ -97,7 +101,7 @@ class TemplateControllerTest extends Specification {
 
     def "can get all templates"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/template"))
+        ResultActions result = mockMvc.perform(get(templatesBaseUrl))
 
         then:
         result.andExpect(status().isOk())
@@ -105,7 +109,7 @@ class TemplateControllerTest extends Specification {
 
     def "getting all templates returns the test template"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/template"))
+        ResultActions result = mockMvc.perform(get(templatesBaseUrl))
 
         then:
         result.andExpect(jsonPath('$.test.name', is("test")))
@@ -113,13 +117,13 @@ class TemplateControllerTest extends Specification {
 
     def "can truncate all templates"() {
         when:
-        ResultActions result = mockMvc.perform(delete("/api/template"))
+        ResultActions result = mockMvc.perform(delete(templatesBaseUrl))
 
         then:
         result.andExpect(status().isOk())
     }
 
     ResultActions postNewTemplate() {
-        return mockMvc.perform(post("/api/template/foo").param("template", "my foo template"))
+        return mockMvc.perform(post("$templatesBaseUrl/foo").param("template", "my foo template"))
     }
 }

@@ -11,35 +11,35 @@ class GreetingController {
     @Autowired
     GreetingService greetingService
 
-    @RequestMapping("/api/ping")
+    @RequestMapping('${pingBaseUrl}')
     String ping() {
         return "pong"
     }
 
-    @RequestMapping(path = "/api/greeting/transient", method = [RequestMethod.GET])
+    @RequestMapping(path = '${greetingsBaseUrl}/transient', method = [RequestMethod.GET])
     GreetingResponse greeting(@RequestParam(name = "template") String template) {
         Greeting greeting = greetingService.generateGreeting(template)
         return new GreetingResponse(greeting: greeting)
     }
 
-    @RequestMapping(path = "/api/greeting", method = [RequestMethod.GET])
+    @RequestMapping(path = '${greetingsBaseUrl}', method = [RequestMethod.GET])
     ResponseEntity<Map<UUID, Greeting>> getAllGreetings() {
         return new ResponseEntity<Map<UUID, Greeting>>(greetingService.getAllGreetings(), HttpStatus.OK)
     }
 
-    @RequestMapping(path = "/api/greeting", method = [RequestMethod.POST])
+    @RequestMapping(path = '${greetingsBaseUrl}', method = [RequestMethod.POST])
     ResponseEntity<GreetingResponse> saveGreeting(@RequestBody Greeting greeting) {
         greeting = greetingService.saveGreeting(greeting)
         return generateResponse(greeting, HttpStatus.CREATED)
     }
 
-    @RequestMapping(path = "/api/greeting", method = [RequestMethod.DELETE])
+    @RequestMapping(path = '${greetingsBaseUrl}', method = [RequestMethod.DELETE])
     ResponseEntity<GreetingResponse> deleteAllGreetings() {
         greetingService.deleteAllGreetings()
         return generateResponse(null, HttpStatus.OK)
     }
 
-    @RequestMapping(path = "/api/greeting/{uuid}", method = [RequestMethod.GET])
+    @RequestMapping(path = '${greetingsBaseUrl}/{uuid}', method = [RequestMethod.GET])
     ResponseEntity<GreetingResponse> getGreeting(@PathVariable UUID uuid) {
         Greeting greeting = greetingService.getGreeting(uuid)
         if (!greeting) {

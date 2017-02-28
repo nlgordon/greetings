@@ -1,2 +1,8 @@
 endpoints:
   sensitive: false
+
+greetingsBaseUrl: /api/greeting
+
+templatesBaseUrl: /api/template
+
+pingBaseUrl: /api/ping

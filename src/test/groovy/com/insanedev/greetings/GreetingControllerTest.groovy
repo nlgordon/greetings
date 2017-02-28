@@ -21,6 +21,9 @@ class GreetingControllerTest extends Specification {
     Greeting mockGreeting
     Gson gson
 
+    String greetingBaseUrl = "/api/greeting"
+    String pingBaseUrl = "/api/ping"
+
     def setup() {
         mockGreeting = new Greeting(id: UUID.randomUUID(), greeting: "hello world")
         controller = new GreetingController()
@@ -29,7 +32,10 @@ class GreetingControllerTest extends Specification {
         controller.greetingService.saveGreeting(_) >> { Greeting greeting -> return greeting }
         controller.greetingService.getAllGreetings() >> [(mockGreeting.id): mockGreeting]
 
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .addPlaceholderValue("greetingsBaseUrl", greetingBaseUrl)
+                .addPlaceholderValue("pingBaseUrl", pingBaseUrl)
+                .build()
 
         gson = new Gson()
     }
@@ -44,7 +50,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the ping api is called the status is 200/OK"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/ping"))
+        ResultActions result = mockMvc.perform(get(pingBaseUrl))
 
         then:
         result.andExpect(status().isOk())
@@ -52,7 +58,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the ping api is called the return is 'pong'"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/ping"))
+        ResultActions result = mockMvc.perform(get(pingBaseUrl))
 
         then:
         result.andExpect(content().string("pong"))
@@ -76,7 +82,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the api for a greeting is called the status is 200/OK"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/greeting/transient?template=foo"))
+        ResultActions result = mockMvc.perform(get("$greetingBaseUrl/transient?template=foo"))
 
         then:
         result.andExpect(status().isOk())
@@ -84,7 +90,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the api for a greeting is called, the response type is json"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/greeting/transient?template=foo").accept(MediaType.APPLICATION_JSON_UTF8))
+        ResultActions result = mockMvc.perform(get("$greetingBaseUrl/transient?template=foo").accept(MediaType.APPLICATION_JSON_UTF8))
 
         then:
         result.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -92,7 +98,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the api for a greeting is called with a template parameter, it is passed to the greeting service"() {
         when:
-        mockMvc.perform(get("/api/greeting/transient?template=hello world").accept(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(get("$greetingBaseUrl/transient?template=hello world").accept(MediaType.APPLICATION_JSON_UTF8))
 
         then:
         1 * controller.greetingService.generateGreeting("hello world") >> mockGreeting
@@ -100,7 +106,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the api is called without a template parameter, a 400 status is returned"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/greeting/transient"))
+        ResultActions result = mockMvc.perform(get("$greetingBaseUrl/transient"))
 
         then:
         result.andExpect(status().isBadRequest())
@@ -108,7 +114,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the api is called the greeting service content is returned to the user"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/greeting/transient?template=foo"))
+        ResultActions result = mockMvc.perform(get("$greetingBaseUrl/transient?template=foo"))
 
         then:
         result.andExpect(jsonPath('$.greeting.greeting', is("hello world")))
@@ -189,7 +195,7 @@ class GreetingControllerTest extends Specification {
 
     def "delete to the base url deletes all greetings"() {
         when:
-        mockMvc.perform(delete("/api/greeting"))
+        mockMvc.perform(delete(greetingBaseUrl))
 
         then:
         1 * controller.greetingService.deleteAllGreetings()
@@ -197,19 +203,19 @@ class GreetingControllerTest extends Specification {
 
     def "getting all greetings returns the test greeting"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/greeting"))
+        ResultActions result = mockMvc.perform(get(greetingBaseUrl))
 
         then:
         result.andExpect(jsonPath('$.' + mockGreeting.id + '.greeting', is(mockGreeting.greeting)))
     }
 
     ResultActions postGreetingRequest(Greeting request) {
-        return mockMvc.perform(post("/api/greeting")
+        return mockMvc.perform(post(greetingBaseUrl)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(gson.toJson(request)))
     }
 
     ResultActions getGreetingResponse(UUID uuid) {
-        return mockMvc.perform(get("/api/greeting/$uuid").accept(MediaType.APPLICATION_JSON_UTF8))
+        return mockMvc.perform(get("$greetingBaseUrl/$uuid").accept(MediaType.APPLICATION_JSON_UTF8))
     }
 }

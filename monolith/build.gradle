@@ -1,0 +1,6 @@
+
+dependencies {
+    compile project(':api:template')
+    compile project(':api:greeting')
+    testCompile 'com.google.code.gson:gson'
+}

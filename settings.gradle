@@ -1,10 +1,12 @@
 rootProject.name = 'greetings'
+include 'monolith'
+
+include 'api:template'
+include 'api:greeting'
+
 include 'services:discovery'
 include 'services:config'
 include 'services:gateway'
 include 'services:gateway'
 include 'services:ping'
 include 'testing:e2e'
-
-include 'api:template'
-include 'api:greeting'

@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '1.5.1.RELEASE'
 }
 
-allprojects {
+subprojects {
     apply plugin: 'groovy'
     apply plugin: 'org.springframework.boot'
 
@@ -41,12 +41,6 @@ allprojects {
             generatedSrcDir.mkdirs()
         }
     }
-}
-
-dependencies {
-    compile project(':api:template')
-    compile project(':api:greeting')
-    testCompile 'com.google.code.gson:gson'
 }
 
 task wrapper(type: Wrapper) {

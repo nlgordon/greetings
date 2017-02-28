@@ -1,9 +1,9 @@
 package com.insanedev.testing.e2e.greetings
 
-import com.insanedev.greetings.templates.Template
-import com.insanedev.testing.e2e.TemplateHelperService
 import com.insanedev.greetings.Greeting
 import com.insanedev.greetings.GreetingResponse
+import com.insanedev.greetings.templates.Template
+import com.insanedev.testing.e2e.TemplateHelperService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
@@ -28,9 +28,6 @@ class LegacyGreetingsTest extends Specification {
 
     @Value('${greetingUrl}')
     String greetingUrl
-
-    @Value('${templateUrl}')
-    String templateUrl
 
     Template testTemplate = new Template(name: "test", template: "test template")
 

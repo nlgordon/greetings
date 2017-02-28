@@ -1,4 +1,4 @@
 server:
   port: 0
 
-ping: foo
+ping: pong

@@ -2,9 +2,21 @@ plugins {
     id 'org.springframework.boot' version '1.5.1.RELEASE'
 }
 
+bootRepackage {
+    enabled = false
+}
+
 subprojects {
     apply plugin: 'groovy'
     apply plugin: 'org.springframework.boot'
+
+    bootRepackage {
+        enabled = false
+    }
+
+    findMainClass {
+        enabled = false
+    }
 
     group 'com.insanedev'
     version '0.1-SNAPSHOT'

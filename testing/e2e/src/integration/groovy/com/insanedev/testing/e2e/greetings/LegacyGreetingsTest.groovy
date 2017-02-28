@@ -40,6 +40,7 @@ class LegacyGreetingsTest extends Specification {
 
     def cleanup() {
         templateService.deleteTemplates()
+        restTemplate.exchange(greetingUrl, HttpMethod.DELETE, null, GreetingResponse)
     }
 
     def "able to ping the api"() {
@@ -58,9 +59,17 @@ class LegacyGreetingsTest extends Specification {
         response.body == "pong"
     }
 
+    def "can get all templates"() {
+        when:
+        ResponseEntity<Map> response = restTemplate.exchange(greetingUrl, HttpMethod.GET, null, Map)
+
+        then:
+        response.statusCode == HttpStatus.OK
+    }
+
     def "can create a transient greeting"() {
         when:
-        ResponseEntity<GreetingResponse> response = restTemplate.exchange(greetingUrl + "?template=test", HttpMethod.GET, null, GreetingResponse)
+        ResponseEntity<GreetingResponse> response = restTemplate.exchange(greetingUrl + "/transient?template=test", HttpMethod.GET, null, GreetingResponse)
 
         then:
         response.statusCode == HttpStatus.OK
@@ -78,5 +87,23 @@ class LegacyGreetingsTest extends Specification {
         response.statusCode == HttpStatus.CREATED
         response.body.greeting.id != null
         response.body.greeting.greeting == testTemplate.template
+    }
+
+    def "can get a persistent greeting by uuid"() {
+        setup:
+        HttpEntity<Greeting> request = new HttpEntity<>(new Greeting(templateName: testTemplate.name))
+        ResponseEntity<GreetingResponse> response = restTemplate.exchange(greetingUrl, HttpMethod.POST, request, GreetingResponse)
+
+        UUID uuid = response.body.greeting.id
+
+        when:
+        ResponseEntity<GreetingResponse> actual = restTemplate.exchange(greetingUrl + "/${uuid}", HttpMethod.GET, null, GreetingResponse)
+
+        then:
+        actual.statusCode == HttpStatus.OK
+        actual.body.greeting.id == uuid
+    }
+
+    def "can delete all greetings"() {
     }
 }

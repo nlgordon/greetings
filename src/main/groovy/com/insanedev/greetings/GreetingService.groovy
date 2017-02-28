@@ -6,4 +6,8 @@ interface GreetingService {
     Greeting saveGreeting(Greeting greeting)
 
     Greeting getGreeting(UUID uuid)
+
+    void deleteAllGreetings()
+
+    Map<UUID, Greeting> getAllGreetings()
 }

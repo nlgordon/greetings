@@ -16,16 +16,27 @@ class GreetingController {
         return "pong"
     }
 
-    @RequestMapping(path = "/api/greeting", method = [RequestMethod.GET])
+    @RequestMapping(path = "/api/greeting/transient", method = [RequestMethod.GET])
     GreetingResponse greeting(@RequestParam(name = "template") String template) {
         Greeting greeting = greetingService.generateGreeting(template)
         return new GreetingResponse(greeting: greeting)
+    }
+
+    @RequestMapping(path = "/api/greeting", method = [RequestMethod.GET])
+    ResponseEntity<Map<UUID, Greeting>> getAllGreetings() {
+        return new ResponseEntity<Map<UUID, Greeting>>(greetingService.getAllGreetings(), HttpStatus.OK)
     }
 
     @RequestMapping(path = "/api/greeting", method = [RequestMethod.POST])
     ResponseEntity<GreetingResponse> saveGreeting(@RequestBody Greeting greeting) {
         greeting = greetingService.saveGreeting(greeting)
         return generateResponse(greeting, HttpStatus.CREATED)
+    }
+
+    @RequestMapping(path = "/api/greeting", method = [RequestMethod.DELETE])
+    ResponseEntity<GreetingResponse> deleteAllGreetings() {
+        greetingService.deleteAllGreetings()
+        return generateResponse(null, HttpStatus.OK)
     }
 
     @RequestMapping(path = "/api/greeting/{uuid}", method = [RequestMethod.GET])

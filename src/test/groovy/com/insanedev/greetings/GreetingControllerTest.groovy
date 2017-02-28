@@ -10,6 +10,7 @@ import spock.lang.Specification
 import static org.hamcrest.Matchers.is
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 class GreetingControllerTest extends Specification {
@@ -21,11 +22,12 @@ class GreetingControllerTest extends Specification {
     Gson gson
 
     def setup() {
-        mockGreeting = new Greeting(greeting: "hello world")
+        mockGreeting = new Greeting(id: UUID.randomUUID(), greeting: "hello world")
         controller = new GreetingController()
         controller.greetingService = Mock(GreetingService)
         controller.greetingService.generateGreeting(_) >> mockGreeting
         controller.greetingService.saveGreeting(_) >> { Greeting greeting -> return greeting }
+        controller.greetingService.getAllGreetings() >> [(mockGreeting.id): mockGreeting]
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
 
@@ -74,7 +76,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the api for a greeting is called the status is 200/OK"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/greeting?template=foo"))
+        ResultActions result = mockMvc.perform(get("/api/greeting/transient?template=foo"))
 
         then:
         result.andExpect(status().isOk())
@@ -82,7 +84,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the api for a greeting is called, the response type is json"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/greeting?template=foo").accept(MediaType.APPLICATION_JSON_UTF8))
+        ResultActions result = mockMvc.perform(get("/api/greeting/transient?template=foo").accept(MediaType.APPLICATION_JSON_UTF8))
 
         then:
         result.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -90,7 +92,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the api for a greeting is called with a template parameter, it is passed to the greeting service"() {
         when:
-        mockMvc.perform(get("/api/greeting?template=hello world").accept(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(get("/api/greeting/transient?template=hello world").accept(MediaType.APPLICATION_JSON_UTF8))
 
         then:
         1 * controller.greetingService.generateGreeting("hello world") >> mockGreeting
@@ -98,7 +100,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the api is called without a template parameter, a 400 status is returned"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/greeting"))
+        ResultActions result = mockMvc.perform(get("/api/greeting/transient"))
 
         then:
         result.andExpect(status().isBadRequest())
@@ -106,7 +108,7 @@ class GreetingControllerTest extends Specification {
 
     def "when the api is called the greeting service content is returned to the user"() {
         when:
-        ResultActions result = mockMvc.perform(get("/api/greeting?template=foo"))
+        ResultActions result = mockMvc.perform(get("/api/greeting/transient?template=foo"))
 
         then:
         result.andExpect(jsonPath('$.greeting.greeting', is("hello world")))
@@ -183,6 +185,22 @@ class GreetingControllerTest extends Specification {
 
         then:
         result.andExpect(status().isNotFound())
+    }
+
+    def "delete to the base url deletes all greetings"() {
+        when:
+        mockMvc.perform(delete("/api/greeting"))
+
+        then:
+        1 * controller.greetingService.deleteAllGreetings()
+    }
+
+    def "getting all greetings returns the test greeting"() {
+        when:
+        ResultActions result = mockMvc.perform(get("/api/greeting"))
+
+        then:
+        result.andExpect(jsonPath('$.' + mockGreeting.id + '.greeting', is(mockGreeting.greeting)))
     }
 
     ResultActions postGreetingRequest(Greeting request) {

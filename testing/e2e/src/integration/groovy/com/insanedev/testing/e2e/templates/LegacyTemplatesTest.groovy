@@ -27,17 +27,13 @@ class LegacyTemplatesTest extends Specification {
 
     Template testTemplate = new Template(name: "test", template: "test template")
 
-    def setup() {
-        templateService.deleteTemplates()
-    }
-
     def cleanup() {
         templateService.deleteTemplates()
     }
 
     def "can get all templates"() {
         when:
-        ResponseEntity<TemplateResponse> response = restTemplate.exchange(urlBase, HttpMethod.GET, null, TemplateResponse)
+        ResponseEntity<Map> response = restTemplate.exchange(urlBase, HttpMethod.GET, null, Map)
 
         then:
         response.statusCode == HttpStatus.OK
@@ -52,11 +48,8 @@ class LegacyTemplatesTest extends Specification {
     }
 
     def "can create a template"() {
-        setup:
-        HttpEntity<Template> template = new HttpEntity<>(testTemplate)
-
         when:
-        ResponseEntity<TemplateResponse> response = restTemplate.exchange(urlBase, HttpMethod.POST, template, TemplateResponse)
+        ResponseEntity<TemplateResponse> response = templateService.createTemplate(testTemplate)
 
         then:
         response.statusCode == HttpStatus.CREATED
@@ -65,8 +58,7 @@ class LegacyTemplatesTest extends Specification {
 
     def "can get a template"() {
         setup:
-        HttpEntity<Template> template = new HttpEntity<>(testTemplate)
-        restTemplate.exchange(urlBase, HttpMethod.POST, template, TemplateResponse)
+        templateService.createTemplate(testTemplate)
 
         when:
         ResponseEntity<TemplateResponse> response = restTemplate.exchange("$urlBase/test", HttpMethod.GET, null, TemplateResponse)

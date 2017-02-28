@@ -60,4 +60,29 @@ class GreetingServiceImplTest extends Specification {
         then:
         actual == expected
     }
+
+    def "deleteAllGreetings truncates all greetings"() {
+        setup:
+        UUID uuid = UUID.randomUUID()
+        def expected = new Greeting(id: uuid)
+        service.greetings[uuid] = expected
+
+        when:
+        service.deleteAllGreetings()
+
+        then:
+        service.greetings.size() == 0
+    }
+
+    def "getAllGreetings returns all greetings"() {
+        setup:
+        service.greetings[input.id] = input
+
+        when:
+        Map greetings = service.getAllGreetings()
+
+        then:
+        greetings[input.id] == input
+        greetings.size() == 1
+    }
 }

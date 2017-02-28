@@ -32,6 +32,16 @@ class GreetingServiceImpl implements GreetingService {
         return greetings[uuid]
     }
 
+    @Override
+    void deleteAllGreetings() {
+        greetings = [:]
+    }
+
+    @Override
+    Map<UUID, Greeting> getAllGreetings() {
+        return greetings
+    }
+
     String getTemplate(String template) {
         return templateService.getTemplate(template).template
     }

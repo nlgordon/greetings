@@ -1,7 +1,7 @@
-spring:
-  application:
-    name: e2e-testing
-
-  cloud:
-    config:
-      uri: http://localhost:8888
+#spring:
+#  application:
+#    name: e2e-testing
+#
+#  cloud:
+#    config:
+#      uri: http://localhost:8888

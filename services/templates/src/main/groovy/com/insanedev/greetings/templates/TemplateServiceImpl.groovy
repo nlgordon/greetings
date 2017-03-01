@@ -1,14 +1,9 @@
 package com.insanedev.greetings.templates
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import org.springframework.web.client.RestTemplate
 
 @Component
 class TemplateServiceImpl implements TemplateService {
-
-    @Autowired
-    RestTemplate restTemplate
 
     Map<String, Template> templates = [:]
 
@@ -53,7 +48,6 @@ class TemplateServiceImpl implements TemplateService {
 
     @Override
     Map getAllTemplates() {
-        return restTemplate.getForObject("http://templates/api/template", Map)
-//        return templates
+        return templates
     }
 }

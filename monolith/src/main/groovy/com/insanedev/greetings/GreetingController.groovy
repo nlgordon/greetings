@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.client.RestTemplate
 
 @RestController
 class GreetingController {
@@ -11,9 +12,12 @@ class GreetingController {
     @Autowired
     GreetingService greetingService
 
+    @Autowired
+    RestTemplate restTemplate
+
     @RequestMapping('${pingBaseUrl}')
     String ping() {
-        return "pong"
+        return restTemplate.getForObject("http://ping/ping", String)
     }
 
     @RequestMapping(path = '${greetingsBaseUrl}/transient', method = [RequestMethod.GET])

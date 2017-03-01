@@ -1,6 +1,6 @@
 spring:
   application:
-    name: monolith
+    name: templates
 
   cloud:
     config:

@@ -1,4 +1,4 @@
-package com.insanedev.greetings
+package com.insanedev.greetings.templates
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
